@@ -56,14 +56,14 @@
 //Bind from channel enables you to bind when a specified channel is going from low to high. This feature is only active
 // if you specify AUTOBIND in PPM mode or set AutoBind to YES for serial mode.
 //Comment to globaly disable the bind feature from a channel.
-#define ENABLE_BIND_CH
+//#define ENABLE_BIND_CH
 //Set the channel number used for bind. Default is 16.
-#define BIND_CH	16
+//#define BIND_CH	16
 
 //Comment to disable the wait for bind feature. If Autobind is enabled in the model config, this feature will not activate
 // the selected protocol unless a bind is requested using bind from channel or the GUI "Bind" button.
 //The goal is to prevent binding other people's model when powering up the TX, changing model or scanning through protocols.
-#define WAIT_FOR_BIND
+//#define WAIT_FOR_BIND
 
 
 /****************/
@@ -75,9 +75,9 @@
 //5-in-1 modules have all RF chips installed
 //!!!If a RF chip is present it MUST be marked as installed!!! or weird things will happen you have been warned.
 #define A7105_INSTALLED
-#define CYRF6936_INSTALLED
-#define CC2500_INSTALLED
-#define NRF24L01_INSTALLED
+//#define CYRF6936_INSTALLED
+//#define CC2500_INSTALLED
+//#define NRF24L01_INSTALLED
 //#define SX1276_INSTALLED		// only supported on STM32 modules
 
 //Uncomment (remove //) if you have an internal 5-in-1 Multi module in a Jumper T18 or T-Lite.
@@ -169,99 +169,99 @@
 //Comment the protocols you are not using with "//" to save Flash space.
 
 //The protocols below need an A7105 to be installed
-#define	AFHDS2A_A7105_INO
-#define	AFHDS2A_RX_A7105_INO
-#define	BUGS_A7105_INO
-#define	FLYSKY_A7105_INO
-#define	HEIGHT_A7105_INO
+//#define	AFHDS2A_A7105_INO
+//#define	AFHDS2A_RX_A7105_INO
+//#define	BUGS_A7105_INO
+//#define	FLYSKY_A7105_INO
+//#define	HEIGHT_A7105_INO
 #define	HUBSAN_A7105_INO
-#define	JOYSWAY_A7105_INO
-#define	KYOSHO_A7105_INO
-#define	PELIKAN_A7105_INO
-#define	WFLY2_A7105_INO
+//#define	JOYSWAY_A7105_INO
+//#define	KYOSHO_A7105_INO
+//#define	PELIKAN_A7105_INO
+//#define	WFLY2_A7105_INO
 
 //The protocols below need a CYRF6936 to be installed
-#define	DEVO_CYRF6936_INO
-#define	DSM_CYRF6936_INO
-#define	DSM_RX_CYRF6936_INO
-#define	E010R5_CYRF6936_INO
-#define	E129_CYRF6936_INO
-#define	J6PRO_CYRF6936_INO
-#define	LOSI_CYRF6936_INO
-#define	MLINK_CYRF6936_INO
-#define	TRAXXAS_CYRF6936_INO
-#define	WFLY_CYRF6936_INO
-#define	WK2x01_CYRF6936_INO
+//#define	DEVO_CYRF6936_INO
+//#define	DSM_CYRF6936_INO
+//#define	DSM_RX_CYRF6936_INO
+//#define	E010R5_CYRF6936_INO
+//#define	E129_CYRF6936_INO
+//#define	J6PRO_CYRF6936_INO
+//#define	LOSI_CYRF6936_INO
+//#define	MLINK_CYRF6936_INO
+//#define	TRAXXAS_CYRF6936_INO
+//#define	WFLY_CYRF6936_INO
+//#define	WK2x01_CYRF6936_INO
 
 //The protocols below need a CC2500 to be installed
-#define	CORONA_CC2500_INO
-#define	E016HV2_CC2500_INO
-#define	ESKY150V2_CC2500_INO
-#define	FRSKYL_CC2500_INO
-#define	FRSKYD_CC2500_INO
-#define	FRSKYV_CC2500_INO
-#define	FRSKYX_CC2500_INO
-#define	FRSKY_RX_CC2500_INO
-#define	HITEC_CC2500_INO
-#define	HOTT_CC2500_INO
+//#define	CORONA_CC2500_INO
+//#define	E016HV2_CC2500_INO
+//#define	ESKY150V2_CC2500_INO
+//#define	FRSKYL_CC2500_INO
+//#define	FRSKYD_CC2500_INO
+//#define	FRSKYV_CC2500_INO
+//#define	FRSKYX_CC2500_INO
+//#define	FRSKY_RX_CC2500_INO
+//#define	HITEC_CC2500_INO
+//#define	HOTT_CC2500_INO
 //#define	IKEAANSLUTA_CC2500_INO  // This is mostly a "for-fun" kind of a thing, not needed for most users
-#define	SCANNER_CC2500_INO
-#define	FUTABA_CC2500_INO
-#define	SKYARTEC_CC2500_INO
-#define	REDPINE_CC2500_INO
-#define	RLINK_CC2500_INO
+//#define	SCANNER_CC2500_INO
+//#define	FUTABA_CC2500_INO
+//#define	SKYARTEC_CC2500_INO
+//#define	REDPINE_CC2500_INO
+//#define	RLINK_CC2500_INO
 
 //The protocols below need a NRF24L01 to be installed
-#define	ASSAN_NRF24L01_INO
-#define	BAYANG_NRF24L01_INO
-#define	BAYANG_RX_NRF24L01_INO
-#define	BUGSMINI_NRF24L01_INO
-#define	CABELL_NRF24L01_INO
-#define	CFLIE_NRF24L01_INO
-#define	CG023_NRF24L01_INO
-#define	CX10_NRF24L01_INO		//Include Q2X2 protocol
-#define	DM002_NRF24L01_INO
-#define	E016H_NRF24L01_INO
-#define	E01X_NRF24L01_INO
-#define	ESKY_NRF24L01_INO
-#define	ESKY150_NRF24L01_INO
-#define	FQ777_NRF24L01_INO
-#define	FX816_NRF24L01_INO
-#define	FY326_NRF24L01_INO
-#define	GW008_NRF24L01_INO
-#define	HISKY_NRF24L01_INO
-#define	HONTAI_NRF24L01_INO
-#define	H8_3D_NRF24L01_INO
-#define	JJRC345_NRF24L01_INO
-#define	KN_NRF24L01_INO
-#define	LOLI_NRF24L01_INO
-#define	MOULDKG_NRF24L01_INO
-#define	NCC1701_NRF24L01_INO
-#define	POTENSIC_NRF24L01_INO
-#define	PROPEL_NRF24L01_INO
-#define	REALACC_NRF24L01_INO
-#define	SHENQI_NRF24L01_INO
-#define	SYMAX_NRF24L01_INO
-#define	TIGER_NRF24L01_INO
-#define	V2X2_NRF24L01_INO
-#define	V761_NRF24L01_INO
-#define	YD717_NRF24L01_INO
-#define	ZSX_NRF24L01_INO
+//#define	ASSAN_NRF24L01_INO
+//#define	BAYANG_NRF24L01_INO
+//#define	BAYANG_RX_NRF24L01_INO
+//#define	BUGSMINI_NRF24L01_INO
+//#define	CABELL_NRF24L01_INO
+//#define	CFLIE_NRF24L01_INO
+//#define	CG023_NRF24L01_INO
+//#define	CX10_NRF24L01_INO		//Include Q2X2 protocol
+//#define	DM002_NRF24L01_INO
+//#define	E016H_NRF24L01_INO
+//#define	E01X_NRF24L01_INO
+//#define	ESKY_NRF24L01_INO
+//#define	ESKY150_NRF24L01_INO
+//#define	FQ777_NRF24L01_INO
+//#define	FX816_NRF24L01_INO
+//#define	FY326_NRF24L01_INO
+//#define	GW008_NRF24L01_INO
+//#define	HISKY_NRF24L01_INO
+//#define	HONTAI_NRF24L01_INO
+//#define	H8_3D_NRF24L01_INO
+//#define	JJRC345_NRF24L01_INO
+//#define	KN_NRF24L01_INO
+//#define	LOLI_NRF24L01_INO
+//#define	MOULDKG_NRF24L01_INO
+//#define	NCC1701_NRF24L01_INO
+//#define	POTENSIC_NRF24L01_INO
+//#define	PROPEL_NRF24L01_INO
+//#define	REALACC_NRF24L01_INO
+//#define	SHENQI_NRF24L01_INO
+//#define	SYMAX_NRF24L01_INO
+//#define	TIGER_NRF24L01_INO
+//#define	V2X2_NRF24L01_INO
+//#define	V761_NRF24L01_INO
+//#define	YD717_NRF24L01_INO
+//#define	ZSX_NRF24L01_INO
 
 //The protocols below need either a CC2500 or NRF24L01 to be installed
-#define	GD00X_CCNRF_INO
-#define	KF606_CCNRF_INO
-#define	MJXQ_CCNRF_INO
-#define	MT99XX_CCNRF_INO
-#define	OMP_CCNRF_INO
-#define	Q303_CCNRF_INO
-#define	Q90C_CCNRF_INO
-#define	SLT_CCNRF_INO
-#define	V911S_CCNRF_INO
-#define	XK_CCNRF_INO
+//#define	GD00X_CCNRF_INO
+//#define	KF606_CCNRF_INO
+//#define	MJXQ_CCNRF_INO
+//#define	MT99XX_CCNRF_INO
+//#define	OMP_CCNRF_INO
+//#define	Q303_CCNRF_INO
+//#define	Q90C_CCNRF_INO
+//#define	SLT_CCNRF_INO
+//#define	V911S_CCNRF_INO
+//#define	XK_CCNRF_INO
 
 //The protocols below need a SX1276 to be installed
-#define	FRSKYR9_SX1276_INO
+//#define	FRSKYR9_SX1276_INO
 
 /***************************/
 /*** PROTOCOLS SETTINGS  ***/
@@ -293,7 +293,7 @@
 //In Serial mode failsafe is configured on the radio itself.
 //In PPM mode and only after the module is up and fully operational, press the bind button for at least 5sec to send the current stick positions as failsafe to the RX.
 //If you want to disable failsafe globally comment the line below using "//".
-#define FAILSAFE_ENABLE
+//#define FAILSAFE_ENABLE
 
 /**************************/
 /*** TELEMETRY SETTINGS ***/
@@ -301,7 +301,7 @@
 //In this section you can configure the telemetry.
 
 //If you do not plan using the telemetry comment this global setting using "//" and skip to the next section.
-#define TELEMETRY
+//#define TELEMETRY
 
 //Comment to invert the polarity of the output telemetry serial signal.
 //This function takes quite some flash space and processor power on an atmega.
@@ -365,7 +365,7 @@
 //This is available natively for ER9X, ERSKY9X and OpenTX.
 
 //If you do not plan to use the Serial mode comment this line using "//" to save Flash space
-#define ENABLE_SERIAL
+//#define ENABLE_SERIAL
 
 
 /*************************/
@@ -379,9 +379,9 @@
 //It is important for the module to know the endpoints of your radio.
 //Below are some standard transmitters already preconfigured.
 //Uncomment only the one which matches your transmitter.
-#define TX_ER9X			//ER9X/ERSKY9X/OpenTX	( 988<->2012 microseconds)
+//#define TX_ER9X			//ER9X/ERSKY9X/OpenTX	( 988<->2012 microseconds)
 //#define TX_DEVO7		//DEVO					(1120<->1920 microseconds)
-//#define TX_SPEKTRUM	//Spektrum				(1100<->1900 microseconds)
+#define TX_SPEKTRUM	//Spektrum				(1100<->1900 microseconds)
 //#define TX_HISKY		//HISKY					(1120<->1920 microseconds)
 //#define TX_MPX		//Multiplex MC2020		(1250<->1950 microseconds)
 //#define TX_WALKERA	//Walkera PL0811-01H	(1000<->1800 microseconds)
@@ -404,11 +404,11 @@
 #define MIN_PPM_CHANNELS 4
 // The line below is used to set the maximum number of channels which the module should work with. Any channels received above this number are discarded.
 // The default value is 16 to receive all possible channels but you might want to filter some "bad" channels from the PPM frame like the ones above 6 on the Walkera PL0811.
-#define MAX_PPM_CHANNELS 16
+#define MAX_PPM_CHANNELS 8
 
 /** Telemetry **/
 //Send simple FrSkyX telemetry using the FrSkyD telemetry format
-#define TELEMETRY_FRSKYX_TO_FRSKYD
+//#define TELEMETRY_FRSKYX_TO_FRSKYD
 
 /** Rotary Switch Protocol Selector Settings **/
 //The table below indicates which protocol to run when a specific position on the rotary switch has been selected.
@@ -424,6 +424,11 @@
 
 const PPM_Parameters PPM_prot[14*NBR_BANKS]=	{
 #if NBR_BANKS > 0
+//******************************       BANK 1       ******************************
+//  Switch  Protocol    Sub protocol  RX_Num  Power   Auto Bind   Option  Chan Order
+/*  1  */  {PROTO_HUBSAN,  H107     , 0 , P_HIGH  , AUTOBIND , 0 , 0x00000000 },
+#endif
+#if NBR_BANKS > 1
 //******************************       BANK 1       ******************************
 //	Switch	Protocol 		Sub protocol	RX_Num	Power		Auto Bind		Option	Chan Order
 /*	1	*/	{PROTO_FLYSKY,	Flysky		,	0	,	P_HIGH	,	NO_AUTOBIND	,	0	,	0x00000000 },
