@@ -23,7 +23,7 @@
 #include <avr/pgmspace.h>
 
 //#define DEBUG_PIN		// Use pin TX for AVR and SPI_CS for STM32 => DEBUG_PIN_on, DEBUG_PIN_off, DEBUG_PIN_toggle
-//#define DEBUG_SERIAL	// Only for STM32_BOARD, compiled with Upload method "Serial"->usart1, "STM32duino bootloader"->USB serial
+#define DEBUG_SERIAL	// Only for STM32_BOARD, compiled with Upload method "Serial"->usart1, "STM32duino bootloader"->USB serial
 
 #ifdef __arm__			// Let's automatically select the board if arm is selected
 	#define STM32_BOARD
@@ -277,23 +277,23 @@ void setup()
 		Serial.begin(115200,SERIAL_8N1);
 
 		// Wait up to 30s for a serial connection; double-blink the LED while we wait
-		unsigned long currMillis = millis();
-		unsigned long initMillis = currMillis;
-		pinMode(LED_pin,OUTPUT);
-		LED_off;
-		while (!Serial && (currMillis - initMillis) <= 30000) {
-			LED_on;
-			delay(100);
-			LED_off;
-			delay(100);
-			LED_on;
-			delay(100);
-			LED_off;
-			delay(500);
-			currMillis = millis();
-		}
+//		unsigned long currMillis = millis();
+//		unsigned long initMillis = currMillis;
+//		pinMode(LED_pin,OUTPUT);
+//		LED_off;
+//		while (!Serial && (currMillis - initMillis) <= 30000) {
+//			LED_on;
+//			delay(100);
+//			LED_off;
+//			delay(100);
+//			LED_on;
+//			delay(100);
+//			LED_off;
+//			delay(500);
+//			currMillis = millis();
+//		}
 
-		delay(250);  // Brief delay for FTDI debugging
+//		delay(250);  // Brief delay for FTDI debugging
 		debugln("Multiprotocol version: %d.%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_REVISION, VERSION_PATCH_LEVEL);
 	#endif
 
@@ -739,10 +739,14 @@ void loop()
 					}
 					count=0;
 					Update_All();
-					#ifdef DEBUG_SERIAL
-						if(TIMER2_BASE->SR & TIMER_SR_CC1IF )
-							debugln("Long update");
-					#endif
+          #ifdef DEBUG_SERIAL
+  					#ifndef STM32_BOARD 
+              if(TIFR1 & OCF1A_bm )
+            #else
+  						if(TIMER2_BASE->SR & TIMER_SR_CC1IF )
+  							debugln("Long update");
+  					#endif
+          #endif
 					if(remote_callback==0)
 						break;
 					cli();							// Disable global int due to RW of 16 bits registers
