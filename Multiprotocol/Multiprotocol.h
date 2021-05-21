@@ -620,7 +620,12 @@ enum MultiPacketTypes
 	char debug_buf[64];
 	#define debug(msg, ...)  { sprintf(debug_buf, msg, ##__VA_ARGS__); Serial.write(debug_buf);}
 	#define debugln(msg, ...)  { sprintf(debug_buf, msg "\r\n", ##__VA_ARGS__); Serial.write(debug_buf);}
+#else
+ #define debug(...) { }
+ #define debugln(...) { }
+ #undef DEBUG_SERIAL
 #endif
+ 
 
 //********************
 //*** Blink timing ***
