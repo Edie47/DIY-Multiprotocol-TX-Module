@@ -306,53 +306,8 @@
 /*** TELEMETRY SETTINGS ***/
 /**************************/
 //In this section you can configure the telemetry.
-
-//If you do not plan using the telemetry comment this global setting using "//" and skip to the next section.
-//#define TELEMETRY
-
-//Comment to invert the polarity of the output telemetry serial signal.
-//This function takes quite some flash space and processor power on an atmega.
-//For a Taranis/T16 with an external module it must be uncommented. For a T16 internal module it must be commented.
-//A 9XR_PRO running erskyTX will work with both commented and uncommented depending on the radio setting Invert COM1 under the Telemetry menu.
-//On other addon/replacement boards like the 9xtreme board or the Ar9x board running erskyTX, you need to uncomment the line below.
-//For er9x it depends if you have an inveter mod or not on the telemetry pin. If you don't have an inverter comment this line.
-//#define INVERT_TELEMETRY
-//For STM32 and OrangeRX modules, comment to prevent the TX from forcing the serial telemetry polarity normal/invert.
-//#define INVERT_TELEMETRY_TX
-
-//Sends Multi status and allow OpenTX and erskyTX to autodetect the telemetry format. Comment to disable.
-//#define MULTI_TELEMETRY
-
-//Work in progress: Sync OpenTX frames with the current protocol timing. This feature is only available on the STM32 module. Uncomment to enable.
-//#define MULTI_SYNC
-
 //Comment a line to disable a specific protocol telemetry
-//#define DSM_TELEMETRY				// Forward received telemetry packet directly to TX to be decoded by er9x, erskyTX and OpenTX
-//#define SPORT_TELEMETRY				// Use FrSkyX format to send/receive telemetry
-//#define AFHDS2A_FW_TELEMETRY		// Forward received telemetry packet directly to TX to be decoded by erskyTX and OpenTX
-//#define AFHDS2A_HUB_TELEMETRY		// Use FrSkyD Hub format to send basic telemetry to TX like er9x
-//#define HUB_TELEMETRY				// Use FrSkyD Hub format to send telemetry to TX
-//#define BAYANG_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
-//#define BUGS_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
-//#define DEVO_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
 #define HUBSAN_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
-//#define NCC1701_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
-//#define OMP_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
-//#define PROPEL_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
-//#define CABELL_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
-//#define RLINK_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
-//#define WFLY2_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
-//#define LOLI_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
-//#define MT99XX_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
-//#define MLINK_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
-//#define MLINK_FW_TELEMETRY			// Forward received telemetry packet directly to TX to be decoded by erskyTX and OpenTX
-//#define HITEC_HUB_TELEMETRY		// Use FrSkyD Hub format to send basic telemetry to the radios which can decode it like er9x, erskyTX and OpenTX
-//#define HITEC_FW_TELEMETRY			// Forward received telemetry packets to be decoded by erskyTX and OpenTX
-//#define SCANNER_TELEMETRY			// Forward spectrum scanner data to TX
-//#define FRSKY_RX_TELEMETRY			// Forward channels data to TX
-//#define AFHDS2A_RX_TELEMETRY		// Forward channels data to TX
-//#define HOTT_FW_TELEMETRY			// Forward received telemetry packets to be decoded by erskyTX and OpenTX
-//#define BAYANG_RX_TELEMETRY			// Forward channels data to TX
 
 /**************************/
 /***  TRAINER SETTINGS  ***/

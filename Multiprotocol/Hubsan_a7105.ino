@@ -467,8 +467,7 @@ uint16_t HUBSAN_callback()
               giro_roll = packet[ROLL_GYRO_MSB] << 8 | packet[ROLL_GYRO_LSB]; 
               
 								v_lipo1=packet[VBAT];// hubsan lipo voltage 8bits the real value is h_lipo/10(0x2A=42 -> 4.2V)
-								telemetry_link=1;
-                telemetry_update = true;
+								telemetry_link=1;// New data available
 							}	
 							A7105_Strobe(A7105_RX);
 							// Read TX RSSI

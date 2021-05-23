@@ -215,9 +215,6 @@
 	#undef NRF24L01_INSTALLED	// Disable NRF for OrangeTX module
 	#undef NRF_CSN_pin
 	#undef SX1276_INSTALLED		// Disable SX1276 for OrangeTX module
-	#define TELEMETRY			// Enable telemetry
-	#define INVERT_TELEMETRY	// Enable invert telemetry
-	#define DSM_TELEMETRY		// Enable DSM telemetry
 #endif
 
 //Change/Force RF chip configuration if MULTI_5IN1_INTERNAL

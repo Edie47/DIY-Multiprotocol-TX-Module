@@ -209,81 +209,6 @@ volatile uint8_t rx_idx=0, rx_len=0;
 // Callback
 uint16_function_t remote_callback = 0;
 
-// Telemetry
-#define TELEMETRY_BUFFER_SIZE 32
-uint8_t packet_in[TELEMETRY_BUFFER_SIZE];//telemetry receiving packets
-#if defined(TELEMETRY)
-	#ifdef MULTI_SYNC
-		uint16_t last_serial_input=0;
-		uint16_t inputRefreshRate=0;
-	#endif
-	#ifdef INVERT_TELEMETRY
-		#if not defined(ORANGE_TX) && not defined(STM32_BOARD)
-			// enable bit bash for serial
-			#define	BASH_SERIAL 1
-		#endif
-		#define	INVERT_SERIAL 1
-	#endif
-	uint8_t telemetry_in_buffer[TELEMETRY_BUFFER_SIZE];//telemetry receiving packets
-	#ifdef BASH_SERIAL
-	// For bit-bashed serial output
-		#define TXBUFFER_SIZE 192
-		volatile struct t_serial_bash
-		{
-			uint8_t head ;
-			uint8_t tail ;
-			uint8_t data[TXBUFFER_SIZE] ;
-			uint8_t busy ;
-			uint8_t speed ;
-		} SerialControl ;
-	#else
-		#define TXBUFFER_SIZE 96
-		volatile uint8_t tx_buff[TXBUFFER_SIZE];
-		volatile uint8_t tx_head=0;
-		volatile uint8_t tx_tail=0;
-	#endif // BASH_SERIAL
-	uint8_t v_lipo1;
-	uint8_t v_lipo2;
-	uint8_t RX_RSSI;
-	uint8_t TX_RSSI;
-	uint8_t RX_LQI;
-	uint8_t TX_LQI;
-	uint8_t telemetry_link=0; 
-	uint8_t telemetry_counter=0;
-	uint8_t telemetry_lost;
-	#ifdef SPORT_SEND
-		#define MAX_SPORT_BUFFER 64
-		uint8_t	SportData[MAX_SPORT_BUFFER];
-		uint8_t	SportHead=0, SportTail=0;
-	#endif
-
-	// Functions definition when required
-	#ifdef HUB_TELEMETRY
-		static void __attribute__((unused)) frsky_send_user_frame(uint8_t, uint8_t, uint8_t);
-	#endif
-
-	//RX protocols
-	#if defined(AFHDS2A_RX_A7105_INO) || defined(FRSKY_RX_CC2500_INO) || defined(BAYANG_RX_NRF24L01_INO) || defined(DSM_RX_CYRF6936_INO)
-		bool rx_data_started;
-		bool rx_data_received;
-		bool rx_disable_lna;
-		uint16_t rx_rc_chan[16];
-	#endif
-	
-	#ifdef HOTT_FW_TELEMETRY
-		uint8_t HoTT_SerialRX_val=0;
-		bool HoTT_SerialRX=false;
-	#endif
-	#ifdef DSM_FWD_PGM
-		uint8_t DSM_SerialRX_val[7];
-		bool DSM_SerialRX=false;
-	#endif
-	#ifdef MULTI_CONFIG_INO
-		uint8_t CONFIG_SerialRX_val[7];
-		bool CONFIG_SerialRX=false;
-	#endif
-#endif // TELEMETRY
-
 #ifdef HUBSAN_HUB_TELEMETRY
   uint8_t telemetry_link=0; 
   uint8_t TX_RSSI;
@@ -292,7 +217,6 @@ uint8_t packet_in[TELEMETRY_BUFFER_SIZE];//telemetry receiving packets
   uint16_t angle_roll;
   uint16_t giro_pitch;
   uint16_t giro_roll;
-  bool telemetry_update = false;
 #endif
 
 uint8_t multi_protocols_index=0xFF;
@@ -377,15 +301,6 @@ void setup()
 		pinMode(PE2_pin,OUTPUT);
 		pinMode(TX_INV_pin,OUTPUT);
 		pinMode(RX_INV_pin,OUTPUT);
-		#if defined TELEMETRY
-			#if defined INVERT_SERIAL
-				TX_INV_on;							// activate inverter for both serial TX and RX signals
-				RX_INV_on;
-			#else
-				TX_INV_off;
-				RX_INV_off;
-			#endif	
-		#endif
 		pinMode(BIND_pin,INPUT_PULLUP);
 		pinMode(PPM_pin,INPUT);
 		pinMode(S1_pin,INPUT_PULLUP);				// dial switch
@@ -703,10 +618,6 @@ void setup()
 		#else
 			attachInterrupt(PPM_pin,PPM_decode,FALLING);
 		#endif
-
-		#if defined(TELEMETRY)
-			PPM_Telemetry_serial_init();// Configure serial for telemetry
-		#endif
 	}
 	else
 #endif //ENABLE_PPM
@@ -787,9 +698,9 @@ void loop()
 					count=0;
 					Update_All();
           #ifdef HUBSAN_HUB_TELEMETRY
-            if (telemetry_update) {
+            if (telemetry_link & 1) {
               debugln("Volts: %d, TX_RSSI: %d, Angle: %d, %d Giro: %d, %d", v_lipo1, TX_RSSI, angle_pitch, angle_roll, giro_pitch, giro_roll);
-              telemetry_update = false;
+              telemetry_link &= ~1;    // Sent, clear bit 0
             }
           #endif
           #ifdef DEBUG_SERIAL
@@ -912,13 +823,6 @@ bool Update_All()
 			}
 		}
 		else
-	#endif
-	#if defined(TELEMETRY)
-		#ifndef MULTI_TELEMETRY
-			if((protocol == PROTO_BAYANG_RX) || (protocol == PROTO_AFHDS2A_RX) || (protocol == PROTO_FRSKY_RX) || (protocol == PROTO_SCANNER) || (protocol==PROTO_FRSKYD) || (protocol==PROTO_BAYANG) || (protocol==PROTO_NCC1701) || (protocol==PROTO_BUGS) || (protocol==PROTO_BUGSMINI) || (protocol==PROTO_HUBSAN) || (protocol==PROTO_AFHDS2A) || (protocol==PROTO_FRSKYX) || (protocol==PROTO_FRSKYX2) || (protocol==PROTO_DSM) || (protocol==PROTO_CABELL) || (protocol==PROTO_HITEC) || (protocol==PROTO_HOTT) || (protocol==PROTO_PROPEL) || (protocol==PROTO_OMP) || (protocol==PROTO_DEVO) || (protocol==PROTO_DSM_RX) || (protocol==PROTO_FRSKY_R9) || (protocol==PROTO_RLINK) || (protocol==PROTO_WFLY2) || (protocol==PROTO_LOLI) || (protocol==PROTO_MLINK) || (protocol==PROTO_MT99XX))
-		#endif
-				if(IS_DISABLE_TELEM_off)
-					TelemetryUpdate();
 	#endif
 	#ifdef ENABLE_BIND_CH
 		if(IS_AUTOBIND_FLAG_on && IS_BIND_CH_PREV_off && Channel_data[BIND_CH-1]>CHANNEL_MAX_COMMAND)
@@ -1121,45 +1025,12 @@ uint8_t bank_switch(void)
 
 inline void tx_pause()
 {
-	#ifdef TELEMETRY
-	// Pause telemetry by disabling transmitter interrupt
-		#ifdef ORANGE_TX
-			USARTC0.CTRLA &= ~0x03 ;
-		#else
-			#ifndef BASH_SERIAL
-				#ifdef STM32_BOARD
-					USART3_BASE->CR1 &= ~ USART_CR1_TXEIE;
-				#else
-					UCSR0B &= ~_BV(UDRIE0);
-				#endif
-			#endif
-		#endif
-	#endif
+
 }
 
 inline void tx_resume()
 {
-	#ifdef TELEMETRY
-	// Resume telemetry by enabling transmitter interrupt
-		if(IS_TX_PAUSE_off)
-		{
-			#ifdef ORANGE_TX
-				cli() ;
-				USARTC0.CTRLA = (USARTC0.CTRLA & 0xFC) | 0x01 ;
-				sei() ;
-			#else
-				#ifndef BASH_SERIAL
-					#ifdef STM32_BOARD
-						USART3_BASE->CR1 |= USART_CR1_TXEIE;
-					#else
-						UCSR0B |= _BV(UDRIE0);			
-					#endif
-				#else
-					resumeBashSerial();
-				#endif
-			#endif
-		}
-	#endif
+
 }
 
 void rf_switch(uint8_t comp)
@@ -1191,38 +1062,6 @@ static void protocol_init()
 		crc8_polynomial  = 0x31;		// Default CRC crc8_polynomial
 		prev_option = option;
 
-		// reset telemetry
-		#ifdef TELEMETRY
-			#ifdef MULTI_SYNC
-				inputRefreshRate = 0;	// Don't do it unless the protocol asks for it
-			#endif
-			multi_protocols_index = 0xFF;
-			tx_pause();
-			init_frskyd_link_telemetry();
-			pps_timer=millis();
-			pps_counter=0;
-			#ifdef BASH_SERIAL
-				TIMSK0 = 0 ;			// Stop all timer 0 interrupts
-				#ifdef INVERT_SERIAL
-					SERIAL_TX_off;
-				#else
-					SERIAL_TX_on;
-				#endif
-				SerialControl.tail=0;
-				SerialControl.head=0;
-				SerialControl.busy=0;
-			#else
-				tx_tail=0;
-				tx_head=0;
-			#endif
-			TX_RX_PAUSE_off;
-			TX_MAIN_PAUSE_off;
-			tx_resume();
-			#if defined(AFHDS2A_RX_A7105_INO) || defined(FRSKY_RX_CC2500_INO) || defined(BAYANG_RX_NRF24L01_INO)
-				for(uint8_t ch=0; ch<16; ch++)
-					rx_rc_chan[ch] = 1024;
-			#endif
-		#endif
 		binding_idx=0;
 		
 		//Stop CPPM if it was previously running
@@ -1310,13 +1149,6 @@ static void protocol_init()
 void update_serial_data()
 {
 	static bool prev_ch_mapping=false;
-	#if defined(TELEMETRY) && defined(INVERT_TELEMETRY_TX)
-		#ifdef INVERT_TELEMETRY
-			static bool prev_inv_telem=true;
-		#else
-			static bool prev_inv_telem=false;
-		#endif
-	#endif
 
 	RX_DONOTUPDATE_on;
 	RX_FLAG_off;								//data is being processed
@@ -1424,32 +1256,6 @@ void update_serial_data()
 			DISABLE_TELEM_on;
 		if(rx_ok_buff[26]&0x01)
 			DISABLE_CH_MAP_on;
-		#if defined(TELEMETRY) && defined(INVERT_TELEMETRY_TX)
-			if(((rx_ok_buff[26]&0x08)!=0) ^ prev_inv_telem)
-			{ //value changed
-				if(rx_ok_buff[26]&0x08)
-				{								// Invert telemetry
-					debugln("Invert telem %d,%d",rx_ok_buff[26]&0x01,prev_inv_telem);
-					#if defined (ORANGE_TX)
-						PORTC.PIN3CTRL |= 0x40 ;
-					#elif defined (STM32_BOARD)
-						TX_INV_on;
-						RX_INV_on;
-					#endif
-				}
-				else
-				{								// Normal telemetry
-					debugln("Normal telem %d,%d",rx_ok_buff[26]&0x01,prev_inv_telem);
-					#if defined (ORANGE_TX)
-						PORTC.PIN3CTRL &= 0xBF ;
-					#elif defined (STM32_BOARD)
-						TX_INV_off;
-						RX_INV_off;
-					#endif
-				}
-				prev_inv_telem=rx_ok_buff[26]&0x08;
-			}
-		#endif
 	}
 
 	if( (rx_ok_buff[0] != cur_protocol[0]) || ((rx_ok_buff[1]&0x5F) != (cur_protocol[1]&0x5F)) || ( (rx_ok_buff[2]&0x7F) != (cur_protocol[2]&0x7F) ) )
@@ -1529,9 +1335,6 @@ void update_serial_data()
 				Channel_data[i]=temp;			//value range 0..2047, 0=-125%, 2047=+125%
 	}
 
-	#ifdef HOTT_FW_TELEMETRY
-		HoTT_SerialRX=false;
-	#endif
 	if(rx_len>27)
 	{ // Data available for the current protocol
 		#if defined(FRSKYX_CC2500_INO) || defined(FRSKYR9_SX1276_INO)
@@ -1584,13 +1387,6 @@ void update_serial_data()
 				}
 			}
 		#endif //SPORT_SEND
-		#ifdef HOTT_FW_TELEMETRY
-			if(protocol==PROTO_HOTT && rx_len==27+1)
-			{//Protocol waiting for 1 byte
-				HoTT_SerialRX_val=rx_ok_buff[27];
-				HoTT_SerialRX=true;
-			}
-		#endif
 		#ifdef DSM_FWD_PGM
 			if(protocol==PROTO_DSM && rx_len==27+7)
 			{//Protocol waiting for 7 bytes
@@ -1712,11 +1508,6 @@ void modules_reset()
 			UDR0;
 		//enable reception and RC complete interrupt
 		UCSR0B = _BV(RXEN0)|_BV(RXCIE0);//rx enable and interrupt
-		#ifndef DEBUG_PIN
-			#if defined(TELEMETRY)
-				initTXSerial( SPEED_100K ) ;
-			#endif //TELEMETRY
-		#endif //DEBUG_PIN
 		#ifdef CHECK_FOR_BOOTLOADER
 			if ( boot )
 			{
@@ -1846,24 +1637,6 @@ void pollBoot()
 	BootState = lState ;
 }
 #endif //CHECK_FOR_BOOTLOADER
-
-#if defined(TELEMETRY)
-void PPM_Telemetry_serial_init()
-{
-	if( (protocol==PROTO_FRSKYD) || (protocol==PROTO_HUBSAN) || (protocol==PROTO_AFHDS2A) || (protocol==PROTO_BAYANG)|| (protocol==PROTO_NCC1701) || (protocol==PROTO_CABELL)  || (protocol==PROTO_HITEC) || (protocol==PROTO_BUGS) || (protocol==PROTO_BUGSMINI) || (protocol==PROTO_PROPEL) || (protocol==PROTO_OMP) || (protocol==PROTO_RLINK) || (protocol==PROTO_WFLY2) || (protocol==PROTO_LOLI) || (protocol==PROTO_MT99XX)
-	#ifdef TELEMETRY_FRSKYX_TO_FRSKYD
-		 || (protocol==PROTO_FRSKYX) || (protocol==PROTO_FRSKYX2)
-	#endif
-	 )
-		initTXSerial( SPEED_9600 ) ;
-	#ifndef TELEMETRY_FRSKYX_TO_FRSKYD
-		if(protocol==PROTO_FRSKYX || protocol==PROTO_FRSKYX2)
-			initTXSerial( SPEED_57600 ) ;
-	#endif
-	if(protocol==PROTO_DSM)
-		initTXSerial( SPEED_125K ) ;
-}
-#endif
 
 // Convert 32b id to rx_tx_addr
 static void set_rx_tx_addr(uint32_t id)

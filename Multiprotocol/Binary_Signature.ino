@@ -103,14 +103,8 @@ RTEA	          23	          10111
 #if defined (CHECK_FOR_BOOTLOADER)
     bool firmwareFlag_CHECK_FOR_BOOTLOADER = true;
 #endif
-#if defined (INVERT_TELEMETRY)
-    bool firmwareFlag_INVERT_TELEMETRY = true;
-#endif
 #if defined (MULTI_STATUS)
     bool firmwareFlag_MULTI_STATUS = true;
-#endif
-#if defined (MULTI_TELEMETRY)
-    bool firmwareFlag_MULTI_TELEMETRY = true;
 #endif
 #if defined (DEBUG_SERIAL)
     bool firmwareFlag_DEBUG_SERIAL = true;
