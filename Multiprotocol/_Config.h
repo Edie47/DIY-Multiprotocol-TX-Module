@@ -26,6 +26,13 @@
 //#define USE_MY_CONFIG
 
 
+/****************************/
+/*** SSD1306 OLED DISPLAY ***/
+/****************************/
+// Enabled Oled display support
+#define OLED_DISPLAY
+
+
 /*************************/
 /*** BOOTLOADER USE     ***/
 /*************************/
@@ -328,7 +335,7 @@
 //#define BAYANG_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
 //#define BUGS_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
 //#define DEVO_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
-//#define HUBSAN_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
+#define HUBSAN_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
 //#define NCC1701_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX
 //#define OMP_HUB_TELEMETRY			// Use FrSkyD Hub format to send telemetry to TX
 //#define PROPEL_HUB_TELEMETRY		// Use FrSkyD Hub format to send telemetry to TX

@@ -23,19 +23,19 @@
 #define _DISABLE_ARDUINO_TIMER0_INTERRUPT_HANDLER_
 #include <wiring.c>
 
-#include <SPI.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
-
-// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
-#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-int analogInput = A6;
+//#include <SPI.h>
+//#include <Wire.h>
+//#include <Adafruit_GFX.h>
+//#include <Adafruit_SSD1306.h>
+//
+//#define SCREEN_WIDTH 128 // OLED display width, in pixels
+//#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+//
+//// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+//#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+//Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+//
+//int analogInput = A6;
 
 #include <avr/pgmspace.h>
 
@@ -284,29 +284,40 @@ uint8_t packet_in[TELEMETRY_BUFFER_SIZE];//telemetry receiving packets
 	#endif
 #endif // TELEMETRY
 
+#ifdef HUBSAN_HUB_TELEMETRY
+  uint8_t telemetry_link=0; 
+  uint8_t TX_RSSI;
+  uint8_t v_lipo1;
+  uint16_t angle_pitch;
+  uint16_t angle_roll;
+  uint16_t giro_pitch;
+  uint16_t giro_roll;
+  bool telemetry_update = false;
+#endif
+
 uint8_t multi_protocols_index=0xFF;
 
 // Init
 void setup()
 {
-  pinMode(analogInput, INPUT);
-  
-   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
-    for (;;); // Don't proceed, loop forever
-  }
-
-  // Clear the buffer
-  display.clearDisplay();
-
-  display.display();
-
-  display.drawRect(0, 0,  128 , 16, SSD1306_WHITE);
-  display.setTextColor(SSD1306_WHITE, SSD1306_BLACK);
-  display.setTextSize(1);
-  display.setCursor(18, 4);
-  display.println("- HUBSAN H107L -");
-  display.display();
+//  pinMode(analogInput, INPUT);
+//  
+//   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+//  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
+//    for (;;); // Don't proceed, loop forever
+//  }
+//
+//  // Clear the buffer
+//  display.clearDisplay();
+//
+//  display.display();
+//
+//  display.drawRect(0, 0,  128 , 16, SSD1306_WHITE);
+//  display.setTextColor(SSD1306_WHITE, SSD1306_BLACK);
+//  display.setTextSize(1);
+//  display.setCursor(18, 4);
+//  display.println("- HUBSAN H107L -");
+//  display.display();
   
 	// Setup diagnostic uart before anything else
 	#ifdef DEBUG_SERIAL
@@ -775,6 +786,12 @@ void loop()
 					}
 					count=0;
 					Update_All();
+          #ifdef HUBSAN_HUB_TELEMETRY
+            if (telemetry_update) {
+              debugln("Volts: %d, TX_RSSI: %d, Angle: %d, %d Giro: %d, %d", v_lipo1, TX_RSSI, angle_pitch, angle_roll, giro_pitch, giro_roll);
+              telemetry_update = false;
+            }
+          #endif
           #ifdef DEBUG_SERIAL
   					#ifndef STM32_BOARD 
               if(TIFR1 & OCF1A_bm )

@@ -85,6 +85,45 @@ enum {
 	DATA_4,
 	DATA_5,
 };
+
+enum Tag0xe0 {
+    TAG, 
+    ROC_MSB,
+    ROC_LSB,
+    XUNK3,
+    XUNK4, 
+    XUNK5,
+    XUNK6,
+    XUNK7,
+    XUNK8, 
+    Z_ACC_MSB, 
+    Z_ACC_LSB, 
+    YAW_GYRO_MSB, 
+    YAW_GYRO_LSB, 
+    VBAT,
+    CRC0,
+    CRC1
+};
+
+enum Tag0xe1 {
+    TAG1, 
+    PITCH_ACC_MSB,
+    PITCH_ACC_LSB,
+    ROLL_ACC_MSB,
+    ROLL_ACC_LSB, 
+    UNK5,
+    UNK6,
+    PITCH_GYRO_MSB, 
+    PITCH_GYRO_LSB, 
+    ROLL_GYRO_MSB, 
+    ROLL_GYRO_LSB, 
+    UNK11,
+    UNK12,  
+    //VBAT,
+    //CRC0,
+    //CRC1
+};
+
 #define HUBSAN_WAIT_WRITE 0x80
 
 static void __attribute__((unused)) hubsan_update_crc()
@@ -421,8 +460,15 @@ uint16_t HUBSAN_callback()
 							A7105_ReadData(16);
 							if( hubsan_check_integrity() )
 							{
-								v_lipo1=packet[13]*2;// hubsan lipo voltage 8bits the real value is h_lipo/10(0x2A=42 -> 4.2V)
+              angle_pitch = packet[PITCH_ACC_MSB] << 8 | packet[PITCH_ACC_LSB];  
+              angle_roll = packet[ROLL_ACC_MSB] << 8 | packet[ROLL_ACC_LSB]; 
+  
+              giro_pitch = packet[PITCH_GYRO_MSB] << 8 | packet[PITCH_GYRO_LSB]; 
+              giro_roll = packet[ROLL_GYRO_MSB] << 8 | packet[ROLL_GYRO_LSB]; 
+              
+								v_lipo1=packet[VBAT];// hubsan lipo voltage 8bits the real value is h_lipo/10(0x2A=42 -> 4.2V)
 								telemetry_link=1;
+                telemetry_update = true;
 							}	
 							A7105_Strobe(A7105_RX);
 							// Read TX RSSI
