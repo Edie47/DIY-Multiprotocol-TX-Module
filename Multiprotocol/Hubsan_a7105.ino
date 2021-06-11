@@ -207,10 +207,10 @@ static void __attribute__((unused)) hubsan_build_packet()
 		else
 		{
 			packet[9] = 0x02;
-			// Channel 5
-			if(CH5_SW)	packet[9] |= HUBSAN_FLAG_FLIP;
 			// Channel 6
-			if(CH6_SW)	packet[9] |= HUBSAN_FLAG_LED;
+			if(CH6_SW)	packet[9] |= HUBSAN_FLAG_FLIP;
+			// Channel 5
+			if(CH5_SW)	packet[9] |= HUBSAN_FLAG_LED;
 			// Channel 8
 			if(CH8_SW)	packet[9] |= HUBSAN_FLAG_VIDEO; // H102D
 		}
