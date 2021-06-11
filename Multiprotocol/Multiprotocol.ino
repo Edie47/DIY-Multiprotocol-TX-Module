@@ -40,7 +40,7 @@
 #include <avr/pgmspace.h>
 
 //#define DEBUG_PIN		// Use pin TX for AVR and SPI_CS for STM32 => DEBUG_PIN_on, DEBUG_PIN_off, DEBUG_PIN_toggle
-#define DEBUG_SERIAL	// Only for STM32_BOARD, compiled with Upload method "Serial"->usart1, "STM32duino bootloader"->USB serial
+//#define DEBUG_SERIAL	// Only for STM32_BOARD, compiled with Upload method "Serial"->usart1, "STM32duino bootloader"->USB serial
 
 #ifdef __arm__			// Let's automatically select the board if arm is selected
 	#define STM32_BOARD
@@ -213,10 +213,13 @@ uint16_function_t remote_callback = 0;
   uint8_t telemetry_link=0; 
   uint8_t TX_RSSI;
   uint8_t v_lipo1;
+  uint16_t est_altitude;
   uint16_t angle_pitch;
   uint16_t angle_roll;
+  uint16_t angle_yaw;
   uint16_t giro_pitch;
   uint16_t giro_roll;
+  uint16_t giro_yaw;
 #endif
 
 uint8_t multi_protocols_index=0xFF;
@@ -699,7 +702,8 @@ void loop()
 					Update_All();
           #ifdef HUBSAN_HUB_TELEMETRY
             if (telemetry_link & 1) {
-              debugln("Volts: %d, TX_RSSI: %d, Angle: %d, %d Giro: %d, %d", v_lipo1, TX_RSSI, angle_pitch, angle_roll, giro_pitch, giro_roll);
+              debugln("Volts: %d, TX_RSSI: %d, Angle: %d, %d, %d", v_lipo1, TX_RSSI, angle_pitch, angle_roll, angle_yaw);
+              debugln("Giro: %d, %d, %d, Alt: %d", giro_pitch, giro_roll, giro_yaw, est_altitude);
               telemetry_link &= ~1;    // Sent, clear bit 0
             }
           #endif

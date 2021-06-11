@@ -458,17 +458,28 @@ uint16_t HUBSAN_callback()
 						if( !(A7105_ReadReg(A7105_00_MODE) & 0x01))
 						{ // data received
 							A7105_ReadData(16);
-							if( hubsan_check_integrity() )
-							{
-              angle_pitch = packet[PITCH_ACC_MSB] << 8 | packet[PITCH_ACC_LSB];  
-              angle_roll = packet[ROLL_ACC_MSB] << 8 | packet[ROLL_ACC_LSB]; 
-  
-              giro_pitch = packet[PITCH_GYRO_MSB] << 8 | packet[PITCH_GYRO_LSB]; 
-              giro_roll = packet[ROLL_GYRO_MSB] << 8 | packet[ROLL_GYRO_LSB]; 
-              
-								v_lipo1=packet[VBAT];// hubsan lipo voltage 8bits the real value is h_lipo/10(0x2A=42 -> 4.2V)
-								telemetry_link=1;// New data available
-							}	
+							if (hubsan_check_integrity()) {
+                switch (packet[0]) {
+                  case 0xE0:
+                    est_altitude = packet[ROC_MSB] << 8 | packet[ROC_LSB];
+                    
+                    angle_yaw = packet[Z_ACC_MSB] << 8 | packet[Z_ACC_LSB];
+                    giro_yaw = packet[YAW_GYRO_MSB] << 8 | packet[YAW_GYRO_LSB];
+                  break;
+                  case 0xE1:
+                    angle_pitch = packet[PITCH_ACC_MSB] << 8 | packet[PITCH_ACC_LSB];  
+                    angle_roll = packet[ROLL_ACC_MSB] << 8 | packet[ROLL_ACC_LSB]; 
+        
+                    giro_pitch = packet[PITCH_GYRO_MSB] << 8 | packet[PITCH_GYRO_LSB]; 
+                    giro_roll = packet[ROLL_GYRO_MSB] << 8 | packet[ROLL_GYRO_LSB]; 
+                  
+                    v_lipo1=packet[VBAT];// hubsan lipo voltage 8bits the real value is h_lipo/10(0x2A=42 -> 4.2V)
+                    telemetry_link=1;// New data available
+                  break;
+                  default:
+                  break;
+                }
+							}
 							A7105_Strobe(A7105_RX);
 							// Read TX RSSI
 							int16_t temp=256-(A7105_ReadReg(A7105_1D_RSSI_THOLD)*8)/5;		// value from A7105 is between 8 for maximum signal strength to 160 or less
