@@ -213,13 +213,13 @@ uint16_function_t remote_callback = 0;
   uint8_t telemetry_link=0; 
   uint8_t TX_RSSI;
   uint8_t v_lipo1;
-  uint16_t est_altitude;
-  uint16_t angle_pitch;
-  uint16_t angle_roll;
-  uint16_t angle_yaw;
-  uint16_t giro_pitch;
-  uint16_t giro_roll;
-  uint16_t giro_yaw;
+  int16_t est_altitude;
+  int16_t angle_pitch;
+  int16_t angle_roll;
+  int16_t angle_yaw;
+  int16_t giro_pitch;
+  int16_t giro_roll;
+  int16_t giro_yaw;
 #endif
 
 uint8_t multi_protocols_index=0xFF;
