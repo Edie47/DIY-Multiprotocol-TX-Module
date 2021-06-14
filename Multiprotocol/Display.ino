@@ -1,3 +1,4 @@
+#ifdef OLED_DISPLAY
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -11,6 +12,23 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 //int analogInput = A6;
+
+/****************/
+/* BATERRY ICON */
+/****************/
+#define LOGO_BAT_HEIGHT   9
+#define LOGO_BAT_WIDTH    6
+
+const unsigned char PROGMEM logo_bat[] =
+{ 0b01111000,
+  0b01111000,
+  0b10000100,
+  0b10000100,
+  0b10000100,
+  0b10000100,
+  0b10000100,
+  0b10000100,
+  0b11111100 };
 
 void dispaly_init() {
   //  pinMode(analogInput, INPUT);
@@ -31,13 +49,15 @@ void dispaly_init() {
   display.setCursor(18, 4);
   display.println("- HUBSAN H107L -");
 
-  display.setCursor(0, 25);
-  display.println("BAT 0.0 V");
+  display.drawBitmap(0, 23, logo_bat, LOGO_BAT_WIDTH, LOGO_BAT_HEIGHT, SSD1306_WHITE); // display.drawBitmap(x position, y position, bitmap data, bitmap width, bitmap height, color)
+
+  display.setCursor(12, 25);
+  display.println("0.0 V");
   
   display.display();
 }
 
-// Prints battery voltage to the OLED display. The voltage is
+// Prints baterry voltage to the OLED display. The voltage is
 // in decimal number in the range from 0 (0V) to 43 (4.3V).
 void printVolts(uint8_t v_lipo)
 {
@@ -49,12 +69,12 @@ void printVolts(uint8_t v_lipo)
 //  display.setTextSize(1);             // Normal 1:1 pixel scale
 //  display.setTextColor(SSD1306_WHITE);        // Draw white text with transparent background
 //  display.setTextColor(SSD1306_WHITE, SSD1306_BLACK);        // Draw white text with black background
-  display.setCursor(24, 25);             // Start at the second row
+  display.setCursor(12, 25);             // Start at the second row
 
   display.write('0' + result);
   //display.write('.');
   
-  display.setCursor(36, 25);             // Start at the second row
+  display.setCursor(24, 25);             // Start at the second row
   display.write('0' + remainder);
   //display.write(' ');
   //display.write('V');
@@ -81,3 +101,4 @@ void divmod10(uint8_t in, uint8_t &div, uint8_t &mod)
   if (r > 9) mod = r - 10;
   else mod = r;
 }
+#endif

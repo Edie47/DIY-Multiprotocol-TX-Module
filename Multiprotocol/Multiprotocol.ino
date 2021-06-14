@@ -213,7 +213,9 @@ uint8_t multi_protocols_index=0xFF;
 // Init
 void setup()
 {
-  dispaly_init();
+  #ifdef OLED_DISPLAY
+    dispaly_init();
+  #endif
   
 	// Setup diagnostic uart before anything else
 	#ifdef DEBUG_SERIAL
@@ -673,7 +675,9 @@ void loop()
             if (telemetry_link & 1) {
               debugln("Volts: %d, TX_RSSI: %d, Angle: %d, %d, %d", v_lipo1, TX_RSSI, angle_pitch, angle_roll, angle_yaw);
               debugln("Giro: %d, %d, %d, Alt: %d", giro_pitch, giro_roll, giro_yaw, est_altitude);
-              printVolts(v_lipo1);
+              #ifdef OLED_DISPLAY
+                printVolts(v_lipo1);
+              #endif
               telemetry_link &= ~1;    // Sent, clear bit 0
             }
           #endif
