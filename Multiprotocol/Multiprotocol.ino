@@ -23,20 +23,6 @@
 #define _DISABLE_ARDUINO_TIMER0_INTERRUPT_HANDLER_
 #include <wiring.c>
 
-//#include <SPI.h>
-//#include <Wire.h>
-//#include <Adafruit_GFX.h>
-//#include <Adafruit_SSD1306.h>
-//
-//#define SCREEN_WIDTH 128 // OLED display width, in pixels
-//#define SCREEN_HEIGHT 32 // OLED display height, in pixels
-//
-//// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
-//#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
-//Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-//
-//int analogInput = A6;
-
 #include <avr/pgmspace.h>
 
 //#define DEBUG_PIN		// Use pin TX for AVR and SPI_CS for STM32 => DEBUG_PIN_on, DEBUG_PIN_off, DEBUG_PIN_toggle
@@ -227,24 +213,7 @@ uint8_t multi_protocols_index=0xFF;
 // Init
 void setup()
 {
-//  pinMode(analogInput, INPUT);
-//  
-//   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-//  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
-//    for (;;); // Don't proceed, loop forever
-//  }
-//
-//  // Clear the buffer
-//  display.clearDisplay();
-//
-//  display.display();
-//
-//  display.drawRect(0, 0,  128 , 16, SSD1306_WHITE);
-//  display.setTextColor(SSD1306_WHITE, SSD1306_BLACK);
-//  display.setTextSize(1);
-//  display.setCursor(18, 4);
-//  display.println("- HUBSAN H107L -");
-//  display.display();
+  dispaly_init();
   
 	// Setup diagnostic uart before anything else
 	#ifdef DEBUG_SERIAL
@@ -704,6 +673,7 @@ void loop()
             if (telemetry_link & 1) {
               debugln("Volts: %d, TX_RSSI: %d, Angle: %d, %d, %d", v_lipo1, TX_RSSI, angle_pitch, angle_roll, angle_yaw);
               debugln("Giro: %d, %d, %d, Alt: %d", giro_pitch, giro_roll, giro_yaw, est_altitude);
+              printVolts(v_lipo1);
               telemetry_link &= ~1;    // Sent, clear bit 0
             }
           #endif
