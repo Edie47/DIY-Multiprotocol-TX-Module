@@ -82,6 +82,12 @@ void printVolts(uint8_t v_lipo)
   display.display();
 }
 
+void printLongUpdate(){
+  display.setCursor(48, 25);             // Start at the second row
+  display.println("Long!");
+  display.display();
+}
+
 // Fast divide and modulo by 10 in one function
 // Code based upon book hackers delight
 void divmod10(uint8_t in, uint8_t &div, uint8_t &mod)

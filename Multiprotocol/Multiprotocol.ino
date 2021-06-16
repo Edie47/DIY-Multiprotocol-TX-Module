@@ -686,8 +686,16 @@ void loop()
               if(TIFR1 & OCF1A_bm )
             #else
   						if(TIMER2_BASE->SR & TIMER_SR_CC1IF )
+            #endif
   							debugln("Long update");
-  					#endif
+          #endif
+          #ifdef OLED_DISPLAY
+            #ifndef STM32_BOARD 
+              if(TIFR1 & OCF1A_bm )
+            #else
+              if(TIMER2_BASE->SR & TIMER_SR_CC1IF )
+            #endif
+              printLongUpdate();
           #endif
 					if(remote_callback==0)
 						break;
