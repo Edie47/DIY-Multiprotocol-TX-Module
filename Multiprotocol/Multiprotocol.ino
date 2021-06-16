@@ -671,6 +671,23 @@ void loop()
 					}
 					count=0;
 					Update_All();
+          #ifdef DEBUG_SERIAL
+  					#ifndef STM32_BOARD 
+              if(TIFR1 & OCF1A_bm )
+            #else
+  						if(TIMER2_BASE->SR & TIMER_SR_CC1IF )
+            #endif
+  							debugln("Long update");
+          #endif
+					if(remote_callback==0)
+						break;
+					cli();							// Disable global int due to RW of 16 bits registers
+					diff=OCR1A-TCNT1;				// Calc the time difference
+					sei();							// Enable global int
+				}
+
+        if(diff>2000*2) //must be less than 2800
+        { //If at least 2ms is available print debug and/or update display
           #ifdef HUBSAN_HUB_TELEMETRY
             if (telemetry_link & 1) {
               debugln("Volts: %d, TX_RSSI: %d, Angle: %d, %d, %d", v_lipo1, TX_RSSI, angle_pitch, angle_roll, angle_yaw);
@@ -681,28 +698,15 @@ void loop()
               telemetry_link &= ~1;    // Sent, clear bit 0
             }
           #endif
-          #ifdef DEBUG_SERIAL
-  					#ifndef STM32_BOARD 
-              if(TIFR1 & OCF1A_bm )
-            #else
-  						if(TIMER2_BASE->SR & TIMER_SR_CC1IF )
-            #endif
-  							debugln("Long update");
-          #endif
-          #ifdef OLED_DISPLAY
-            #ifndef STM32_BOARD 
-              if(TIFR1 & OCF1A_bm )
-            #else
-              if(TIMER2_BASE->SR & TIMER_SR_CC1IF )
-            #endif
-              printLongUpdate();
-          #endif
-					if(remote_callback==0)
-						break;
-					cli();							// Disable global int due to RW of 16 bits registers
-					diff=OCR1A-TCNT1;				// Calc the time difference
-					sei();							// Enable global int
-				}
+//          #ifdef OLED_DISPLAY
+//            #ifndef STM32_BOARD 
+//              if(TIFR1 & OCF1A_bm )
+//            #else
+//              if(TIMER2_BASE->SR & TIMER_SR_CC1IF )
+//            #endif
+//              printLongUpdate();
+//          #endif
+        }
 			}
 		}			
 	}
